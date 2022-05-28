@@ -39,6 +39,11 @@
               >Logout</router-link
             >
           </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/profile" v-if="token"
+              >Profile</router-link
+            >
+          </li>
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
@@ -75,121 +80,30 @@
   <div id="spinner_container_genreal" v-if="isLoading">
     <img src="./assets/images/spinner.jpg" alt="" id="spinner_general" />
   </div>
-
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4 mt-5" v-for="book in books" :key="book.id">
-        <div class="card" style="width: 18rem">
-          <img src="./assets/images/poet.webp" class="card-img-top" alt="..." />
-          <div class="card-body">
-            <h5 class="card-title">
-              <strong> &#8377; {{ book.price }} </strong>
-            </h5>
-            <p class="card-text">{{ book.title.slice(0, 60) }}..</p>
-            <a href="" class="btn btn-primary">Buy Now</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-3" v-if="books.length > 0">
-        <paginate
-          :page-count="pagination.pageCount"
-          :click-handler="clickHandler"
-          :prev-text="'Prev'"
-          :next-text="'Next'"
-          :container-class="'pagination'"
-        >
-        </paginate>
-      </div>
-    </div>
-  </div>
 </template>
-
 <script>
 // import HelloWorld from "./components/HelloWorld.vue";
-import { provide, onMounted, ref, reactive } from "vue";
-import axios from "axios";
-import Paginate from "vuejs-paginate-next";
+import { provide } from "vue";
 
 export default {
   name: "App",
-  components: {
-    // HelloWorld,
-    paginate: Paginate,
-  },
+  components: {},
 
   setup() {
     const token = localStorage.getItem("token");
     const baseUrl = "http://localhost:8000/api";
 
-    let isLoading = ref(false);
-    let books = ref([]);
-    let pagination = reactive({
-      pageCount: 0,
-    });
-
     provide("baseUrl", baseUrl);
     provide("token", token);
-
-    onMounted(() => {
-      booksList();
-    });
 
     function logout() {
       localStorage.removeItem("token");
       window.location.href = "/";
     }
 
-    const headers = {
-      "Content-Type": "application/json",
-      cors: true,
-    };
-
-    async function booksList() {
-      //show spinner
-      isLoading.value = true;
-      const url = `${baseUrl}/books`;
-
-      await axios
-        .get(url, {
-          headers: headers,
-        })
-        .then(function (response) {
-          if (response.data.statuscode == 200) {
-            //throw success response
-            books.value = response.data.data.books.data;
-            pagination.pageCount = response.data.data.books.last_page;
-          }
-        });
-
-      isLoading.value = false;
-    }
-
-    async function clickHandler(page) {
-      isLoading.value = true;
-
-      await axios
-        .get(`${baseUrl}/books?page=${page}`, {
-          headers: headers,
-        })
-        .then(function (response) {
-          if (response.data.statuscode == 200) {
-            // //throw success response
-            books.value = response.data.data.books.data;
-          }
-        });
-
-      isLoading.value = false;
-    }
-
     return {
       token,
-      isLoading,
-      books,
-      pagination,
       logout,
-      booksList,
-      clickHandler,
     };
   },
 };
