@@ -2,6 +2,7 @@
   <div id="spinner_container_genreal" v-if="isLoading">
     <img src="./../../assets/images/spinner.jpg" alt="" id="spinner_general" />
   </div>
+
   <div class="container mt-4" v-if="!isLoading">
     <div class="row">
       <div class="col-md-3">
@@ -108,8 +109,6 @@ export default {
     const baseUrl = inject("baseUrl");
 
     let isLoading = ref(false);
-
-    console.log(isLoading);
 
     let initialState = {
       first_name: "",
