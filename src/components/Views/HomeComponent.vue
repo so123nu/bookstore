@@ -67,10 +67,8 @@ export default {
     });
 
     function getImgUrl(pic) {
-      console.log(pic);
       var images = require.context("./../../assets/images/", false, /\.webp$/);
       return images("./" + pic);
-
     }
 
     function logout() {

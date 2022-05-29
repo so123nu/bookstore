@@ -7,7 +7,7 @@
       <div class="col-md-3">
         <div class="card">
           <img
-            src="./../../assets/images/poet.webp"
+            :src="getImgUrl(book.image)"
             class="card-img-top"
             alt="..."
             id="book_image"
@@ -189,6 +189,7 @@ export default {
         pages: "",
         rating: "",
         genre: "",
+        image: "",
       },
     });
 
@@ -205,6 +206,17 @@ export default {
     });
 
     let paymentForm = reactive({ ...initialState });
+
+    function getImgUrl(pic) {
+      if (pic) {
+        var images = require.context(
+          "./../../assets/images/",
+          false,
+          /\.webp$/
+        );
+        return images("./" + pic);
+      }
+    }
 
     onMounted(() => {
       const id = route.params.id;
@@ -242,6 +254,7 @@ export default {
             book.genre = response.data.data.book.genres[0].genre;
             book.pages = response.data.data.book.total_pages;
             book.rating = response.data.data.book.rating;
+            book.image = response.data.data.book.image;
             price.value = response.data.data.book.price;
           }
         });
@@ -289,6 +302,7 @@ export default {
       paymentForm,
       purchaseBook,
       separateYear,
+      getImgUrl,
     };
   },
 };
