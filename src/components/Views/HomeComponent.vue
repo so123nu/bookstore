@@ -7,7 +7,7 @@
       <div class="col-md-4 mt-5" v-for="book in books" :key="book.id">
         <div class="card" style="width: 18rem">
           <img
-            src="./../../assets/images/poet.webp"
+            :src="getImgUrl(book.image)"
             class="card-img-top"
             alt="..."
             id="book_image"
@@ -66,6 +66,13 @@ export default {
       booksList();
     });
 
+    function getImgUrl(pic) {
+      console.log(pic);
+      var images = require.context("./../../assets/images/", false, /\.webp$/);
+      return images("./" + pic);
+
+    }
+
     function logout() {
       localStorage.removeItem("token");
       window.location.href = "/";
@@ -121,6 +128,7 @@ export default {
       logout,
       booksList,
       clickHandler,
+      getImgUrl,
     };
   },
 };
