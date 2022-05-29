@@ -201,6 +201,7 @@ export default {
       expiry: "",
       isLoading: false,
       amount: price.value,
+      book_id: "",
     });
 
     let paymentForm = reactive({ ...initialState });
@@ -252,6 +253,7 @@ export default {
       //show spinner
       paymentForm.isLoading = true;
       paymentForm.amount = price.value;
+      paymentForm.book_id = route.params.id;
       const url = `${baseUrl}/payments/create`;
 
       await axios

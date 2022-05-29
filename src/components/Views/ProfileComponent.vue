@@ -6,22 +6,7 @@
   <div class="container mt-4" v-if="!isLoading">
     <div class="row">
       <div class="col-md-3">
-        <ul class="list-group">
-          <li class="list-group-item">
-            <router-link class="profile_link" to="/profile"
-              >Profile</router-link
-            >
-          </li>
-          <li class="list-group-item">
-            <a class="profile_link" href="">Orders</a>
-          </li>
-          <li class="list-group-item">
-            <a class="profile_link" href="">Payments</a>
-          </li>
-          <li class="list-group-item">
-            <a class="profile_link" href="">My Books</a>
-          </li>
-        </ul>
+        <ProfileSidebarComponent></ProfileSidebarComponent>
       </div>
       <div class="col-md-9">
         <div class="card p-4">
@@ -102,8 +87,12 @@ import { reactive, onMounted, inject, ref } from "vue";
 import axios from "axios";
 import { createToast } from "mosha-vue-toastify";
 import "mosha-vue-toastify/dist/style.css";
+import ProfileSidebarComponent from "./ProfileSidebarComponent.vue";
 
 export default {
+  components: {
+    ProfileSidebarComponent: ProfileSidebarComponent,
+  },
   setup() {
     const token = localStorage.getItem("token");
     const baseUrl = inject("baseUrl");
@@ -213,12 +202,6 @@ body {
   height: 16px;
   margin-left: 10px;
   margin-bottom: 3px;
-}
-
-.profile_link {
-  text-decoration: none;
-  color: #000;
-  font-weight: bold;
 }
 
 .form_wrapper {
